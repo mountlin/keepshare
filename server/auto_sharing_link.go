@@ -88,8 +88,7 @@ func autoSharingLink(c *gin.Context) {
 
 	default: // include StatusSensitive
 		l.Debug("share status:", sh.State)
-		//statusPageAddress := fmt.Sprintf("https://%v/shared/status?id=%v", config.RootDomain, sh.AutoID)
-		statusPageAddress := fmt.Sprintf("https://localhost:8080/shared/status?id=%v", sh.AutoID)
+		statusPageAddress := fmt.Sprintf("https://%s/console/shared/status?id=%v", config.RootDomain(), sh.AutoID)
 		c.Redirect(http.StatusFound, statusPageAddress)
 	}
 }

@@ -78,12 +78,11 @@ func Start() error {
 	router.Use(
 		gin.Recovery(),
 		mdw.CORS(),
-		mdw.AccessLogger(),
+		mdw.AccessLogger(regexp.MustCompile("^/(api|session)/"), autoSharingPath),
 	)
 
 	// health check
 	router.GET("/health", func(c *gin.Context) {
-		c.Set(mdw.SkipAccessLog, true)
 		c.Status(http.StatusOK)
 	})
 
@@ -135,7 +134,6 @@ func apiRouter(router *gin.Engine) {
 	g.DELETE("/blacklist", mdw.Auth, removeFromBlackList)
 
 	g.GET("/host/info", mdw.Auth, getHostInfo)
-	//g.POST("/host/release_storage", mdw.Auth, releaseStorage)
 }
 
 func consoleRouter(router *gin.Engine) {

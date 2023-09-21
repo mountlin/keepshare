@@ -34,9 +34,6 @@ type Host interface {
 
 	// HostInfo returns basic information of the host.
 	HostInfo(ctx context.Context, userID string, options map[string]any) (resp map[string]any, err error)
-
-	// ReleaseStorage release accounts storage.
-	//ReleaseStorage(ctx context.Context, userID string, options map[string]any) (resp map[string]any, err error)
 }
 
 // Properties of a host.

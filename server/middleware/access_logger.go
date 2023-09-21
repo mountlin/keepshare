@@ -7,6 +7,7 @@ package middleware
 import (
 	"net"
 	"os"
+	"regexp"
 	"time"
 
 	"github.com/KeepShareOrg/keepshare/config"
@@ -21,7 +22,7 @@ var accessLogger gin.HandlerFunc
 var SkipAccessLog = "_skip_access_log_"
 
 // AccessLogger a Logger middleware that will write the access logs to stdout or file.
-func AccessLogger() gin.HandlerFunc {
+func AccessLogger(pathPatterns ...*regexp.Regexp) gin.HandlerFunc {
 	if accessLogger != nil {
 		return accessLogger
 	}
@@ -41,11 +42,10 @@ func AccessLogger() gin.HandlerFunc {
 		// Process request
 		c.Next()
 
-		// Log only when path is not being skipped
-		if accessLogSkipPath(path) {
+		if c.GetBool(SkipAccessLog) {
 			return
 		}
-		if c.GetBool(SkipAccessLog) {
+		if len(pathPatterns) > 0 && !matchAny(path, pathPatterns) {
 			return
 		}
 
@@ -77,6 +77,11 @@ func AccessLogger() gin.HandlerFunc {
 	return accessLogger
 }
 
-func accessLogSkipPath(path string) bool {
+func matchAny(s string, rs []*regexp.Regexp) bool {
+	for _, r := range rs {
+		if r.MatchString(s) {
+			return true
+		}
+	}
 	return false
 }
