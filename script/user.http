@@ -1,0 +1,30 @@
+### user register
+POST http://localhost:8080/session/sign_up
+Content-Type: application/json
+
+{
+  "username": "gzh",
+  "email": "guozhenghong@xunlei.com",
+  "password": "123123.."
+}
+
+### user sign in
+POST http://localhost:8080/session/sign_in
+Content-Type: application/json
+
+{
+  "email": "guozhenghong@xunlei.com",
+  "password": "123123.."
+}
+
+### user sign out
+POST http://localhost:8080/session/sign_out
+
+### refresh token
+POST http://localhost:8080/session/token
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTEzOTgxODQsInVzZXJJZCI6IjRtNmE4MDN2ZW9qaSIsImNoYW5uZWxJZCI6IjgwM3Zlb2pqIiwiZW1haWwiOiJndW96aGVuZ2hvbmdAeHVubGVpLmNvbSIsInVzZXJuYW1lIjoiZ3poIn0.AOo7pyPKqUS2C8trXk7xW2HnfbIT97-sg1ZxGmh0kU4
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTE5OTU3ODQsInVzZXJJZCI6IjRtNmE4MDN2ZW9qaSIsImNoYW5uZWxJZCI6IjgwM3Zlb2pqIiwiZW1haWwiOiJndW96aGVuZ2hvbmdAeHVubGVpLmNvbSIsInVzZXJuYW1lIjoiZ3poIn0.zcmGX8c5aCEuQSZOQmZaF3f8lJQU1h1Fqx3SkDrW3mg"
+}

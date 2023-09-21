@@ -1,0 +1,66 @@
+### get all shared links
+GET http://localhost:8080/api/shared_links
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTI4NzU5NzQsInVzZXJJZCI6IjRtYWs0aGZrMmtrMSIsImNoYW5uZWxJZCI6IjRoZmsya2syIiwiZW1haWwiOiJhZG1pbkBxcS5jb20iLCJ1c2VybmFtZSI6IiJ9.V8iaxnWa0ZL63oDCdVgPmnazm428dVeE5UPOPtb09EI
+
+### filter equals
+# expires token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTI4NTYyMDcsInVzZXJJZCI6IjRtYWs0aGZrMmtrMSIsImNoYW5uZWxJZCI6IjRoZmsya2syIiwiZW1haWwiOiJhZG1pbkBxcS5jb20iLCJ1c2VybmFtZSI6IiJ9.PO37MdWwsupeeBF5vmS05IUzd4iVFC84O8_8mvlP6Yo
+GET http://localhost:8080/api/shared_links?filter=%5B%7B%22key%22%3A%22created_at%22%2C%22operator%22%3A%22%3D%22%2C%22value%22%3A%222023-08-22%2011%3A32%3A03%22%7D%5D
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTI4NzU5NzQsInVzZXJJZCI6IjRtYWs0aGZrMmtrMSIsImNoYW5uZWxJZCI6IjRoZmsya2syIiwiZW1haWwiOiJhZG1pbkBxcS5jb20iLCJ1c2VybmFtZSI6IiJ9.V8iaxnWa0ZL63oDCdVgPmnazm428dVeE5UPOPtb09EI
+
+### filter between
+GET http://localhost:8080/api/shared_links?filter=%5B%7B%22key%22%3A%22created_at%22%2C%22operator%22%3A%22between%22%2C%22value%22%3A%5B%222023-08-22%2011%3A32%3A00%22%2C%222023-08-22%2016%3A00%3A30%22%5D%7D%5D
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTI4NzU5NzQsInVzZXJJZCI6IjRtYWs0aGZrMmtrMSIsImNoYW5uZWxJZCI6IjRoZmsya2syIiwiZW1haWwiOiJhZG1pbkBxcS5jb20iLCJ1c2VybmFtZSI6IiJ9.V8iaxnWa0ZL63oDCdVgPmnazm428dVeE5UPOPtb09EI
+
+### limit
+GET http://localhost:8080/api/shared_links?limit=1&filter=%5B%7B%22key%22%3A%22created_at%22%2C%22operator%22%3A%22between%22%2C%22value%22%3A%5B%222023-08-22%2011%3A32%3A00%22%2C%222023-08-22%2016%3A00%3A30%22%5D%7D%5D
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTI4NzU5NzQsInVzZXJJZCI6IjRtYWs0aGZrMmtrMSIsImNoYW5uZWxJZCI6IjRoZmsya2syIiwiZW1haWwiOiJhZG1pbkBxcS5jb20iLCJ1c2VybmFtZSI6IiJ9.V8iaxnWa0ZL63oDCdVgPmnazm428dVeE5UPOPtb09EI
+
+### next page
+GET http://localhost:8080/api/shared_links?limit=1&page_token=1&filter=%5B%7B%22key%22%3A%22created_at%22%2C%22operator%22%3A%22between%22%2C%22value%22%3A%5B%222023-08-22%2011%3A32%3A00%22%2C%222023-08-22%2016%3A00%3A30%22%5D%7D%5D
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTI4NzU5NzQsInVzZXJJZCI6IjRtYWs0aGZrMmtrMSIsImNoYW5uZWxJZCI6IjRoZmsya2syIiwiZW1haWwiOiJhZG1pbkBxcS5jb20iLCJ1c2VybmFtZSI6IiJ9.V8iaxnWa0ZL63oDCdVgPmnazm428dVeE5UPOPtb09EI
+
+### dsl query
+GET http://localhost:8080/api/shared_links?search=name%20match%20%22%E4%BA%BA%E9%97%B4%22%3B
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTM0NTg5MDgsInVzZXJJZCI6IjRtYWs0aGZrMmtrMSIsImNoYW5uZWxJZCI6IjRoZmsya2syIiwiZW1haWwiOiJhZG1pbkBxcS5jb20iLCJ1c2VybmFtZSI6IiJ9.OeXjMFwPd0eeQyzZv9VR1kr13iXXUNY1jT4gNmyDvxo
+
+### basic query
+GET http://localhost:8080/api/shared_links
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTM0NTg5MDgsInVzZXJJZCI6IjRtYWs0aGZrMmtrMSIsImNoYW5uZWxJZCI6IjRoZmsya2syIiwiZW1haWwiOiJhZG1pbkBxcS5jb20iLCJ1c2VybmFtZSI6IiJ9.OeXjMFwPd0eeQyzZv9VR1kr13iXXUNY1jT4gNmyDvxo
+
+### size query
+GET http://localhost:8080/api/shared_links?search=size%3D5871514383%3B
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTM0NTg5MDgsInVzZXJJZCI6IjRtYWs0aGZrMmtrMSIsImNoYW5uZWxJZCI6IjRoZmsya2syIiwiZW1haWwiOiJhZG1pbkBxcS5jb20iLCJ1c2VybmFtZSI6IiJ9.OeXjMFwPd0eeQyzZv9VR1kr13iXXUNY1jT4gNmyDvxo
+
+### manual create share link
+POST http://localhost:8080/api/shared_links
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTM4Mjc2MzQsInVzZXJJZCI6IjRtYWs0aGZrMmtrMSIsImNoYW5uZWxJZCI6IjRoZmsya2syIiwiZW1haWwiOiJhZG1pbkBxcS5jb20iLCJ1c2VybmFtZSI6IiJ9.FNStSRkWVxQVlCJmrW9mhBw-C3O-Kq9sninMAap2Itw
+
+{
+  "channelID": "4hfk2kk2",
+  "links": [
+    "magnet:?xt=urn:btih:AAA0704AE98BCE9A0BFC94C70DE20C71221672B1",
+    "magnet:?xt=urn:btih:57357F62F33DABD385D396A020CD1E0ECF23AA37",
+    "magnet:?xt=urn:btih:1A74248FF614F4845DB7A09402CA409452EF3AAD"
+  ]
+}
+
+### get shared link info
+GET http://localhost:8080/api/shared_link?id=3
+
+### batch get shared links info
+POST http://localhost:8080/api/query_shared_links
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTQwMTM3NTEsInVzZXJJZCI6IjRtYWs0aGZrMmtrMSIsImNoYW5uZWxJZCI6IjRoZmsya2syIiwiZW1haWwiOiJhZG1pbkBxcS5jb20iLCJ1c2VybmFtZSI6IiJ9.lhzt5s5-xwKzrYhr3DigqLrH1n7C4F9xyJtVaS14OfA
+Content-Type: application/json
+
+{
+  "links": [
+    "magnet:?xt=urn:btih:57357f62f33dabd385d396a020cd1e0ecf23aa37",
+    "magnet:?xt=urn:btih:zgcw3jgqm7uhw6waayqslbmky7wvlrxj"
+  ]
+}
