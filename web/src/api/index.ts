@@ -6,9 +6,7 @@ import { refreshToken } from "./account";
 import { RoutePaths } from "@/router";
 
 // keepShare base api address
-export const BASE_API = import.meta.env.DEV
-  ? "http://localhost:8080/"
-  : `//${window.location.hostname}:8080`;
+export const BASE_API = import.meta.env.DEV ? "http://localhost:8080/" : window.location.origin;
 
 export const fetcher = axios.create({
   baseURL: BASE_API,
