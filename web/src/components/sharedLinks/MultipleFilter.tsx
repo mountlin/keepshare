@@ -208,8 +208,10 @@ const MultipleFilter = ({ handleSearch }: ComponentProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   useEffect(() => {
     const search = searchParams.get("search");
-    setSearchParams("");
-    search && handleInputSearch(search);
+    if (search) {
+      setSearchParams("");
+      search && handleInputSearch(search);
+    }
   }, []);
 
   return (

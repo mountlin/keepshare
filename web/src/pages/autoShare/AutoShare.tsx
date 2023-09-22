@@ -171,14 +171,15 @@ const AutoShare = () => {
           <Space>
             <Text>
               You can prevent certain links from generating Auto-Share links by
-              <TextLink
+              <Link
                 style={{
                   color: token.colorPrimaryHover,
                   marginLeft: token.marginXXS,
                 }}
+                to={`${RoutePaths.SharedLinks}?tab=link-blacklist`}
               >
                 Adding Links to the Blacklist
-              </TextLink>
+              </Link>
             </Text>
           </Space>
           <Divider />
