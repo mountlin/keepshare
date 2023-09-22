@@ -70,8 +70,7 @@ const SharedStatus = () => {
 
         const hostSharedLink = fileInfo.host_shared_link;
         if (state === "OK" && hostSharedLink) {
-          // TODO:
-          // location.href = hostSharedLink;
+          location.href = hostSharedLink;
         }
       }
       error && message.error(error.message);
