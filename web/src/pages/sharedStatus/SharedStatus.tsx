@@ -70,7 +70,8 @@ const SharedStatus = () => {
 
         const hostSharedLink = fileInfo.host_shared_link;
         if (state === "OK" && hostSharedLink) {
-          location.href = hostSharedLink;
+          // TODO:
+          // location.href = hostSharedLink;
         }
       }
       error && message.error(error.message);
@@ -85,10 +86,10 @@ const SharedStatus = () => {
       <LogoPng src={LogoIcon} />
       <ContentWrapper>
         <Paragraph style={{ maxWidth: "720px" }}>
-          <Title level={3} style={{ textAlign: "center" }}>
+          <Title level={3} style={{ textAlign: "center", color: "#000" }}>
             {title}
           </Title>
-          <Text>{subtitle}</Text>
+          <Text style={{ color: "#000" }}>{subtitle}</Text>
         </Paragraph>
 
         <BannerWrapper>
@@ -117,7 +118,9 @@ const SharedStatus = () => {
         {link && (
           <Space style={{ marginTop: "16px" }}>
             <LinkOutlined />
-            <Text copyable>{link}</Text>
+            <Text copyable style={{ color: "#000" }}>
+              {link}
+            </Text>
           </Space>
         )}
       </ContentWrapper>
