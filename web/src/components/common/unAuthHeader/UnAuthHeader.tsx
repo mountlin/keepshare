@@ -1,4 +1,4 @@
-import { theme } from "antd";
+import { Button, theme } from "antd";
 import { StyledLink, NavWrapper } from "./style";
 import { RoutePaths } from "@/router";
 
@@ -7,10 +7,20 @@ const UnAuthHeader = () => {
 
   return (
     <NavWrapper>
-      <StyledLink color={token.colorText} to={"/"}>
+      <Button
+        type="link"
+        style={{
+          fontSize: token.fontSizeLG,
+          color: token.colorText,
+        }}
+        href={window.origin}
+      >
         Home
-      </StyledLink>
-      <StyledLink color={token.colorText} to={"https://github.com/keepshare"}>
+      </Button>
+      <StyledLink
+        color={token.colorText}
+        to={"https://github.com/KeepShareOrg/keepshare"}
+      >
         Github
       </StyledLink>
       <StyledLink color={token.colorText} to={RoutePaths.Donation}>

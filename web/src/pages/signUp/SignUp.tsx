@@ -21,12 +21,14 @@ import { RoutePaths } from "@/router";
 interface FieldType {
   email?: string;
   password?: string;
+  confirmPassword?: string;
   captchaToken?: string;
 }
 type ErrorMessage = string;
 const validateFromFailed = ({
   email,
   password,
+  confirmPassword,
   captchaToken,
 }: FieldType): ErrorMessage => {
   if (!email || email?.trim() === "") {
@@ -35,11 +37,17 @@ const validateFromFailed = ({
   if (!password || password?.trim() === "") {
     return "password is required";
   }
+  if (!confirmPassword || confirmPassword?.trim() === "") {
+    return "confirm password is required";
+  }
   if (!captchaToken || captchaToken?.trim() === "") {
     return "please verify captcha first";
   }
   if (!isValidateEmail(email?.trim() || "")) {
     return "email address not valid";
+  }
+  if (password !== confirmPassword) {
+    return "The confirm password and password must match";
   }
 
   return "";
@@ -108,6 +116,9 @@ const SignUp = () => {
           </Form.Item>
           <StyledItem name="password" label="Password">
             <PasswordInput placeholder="Password" />
+          </StyledItem>
+          <StyledItem name="confirmPassword" label="Confirm Password">
+            <PasswordInput placeholder="Repeat Password" />
           </StyledItem>
           {shouldVerify && (
             <Form.Item name="captchaToken">
