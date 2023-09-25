@@ -115,10 +115,10 @@ const getColumns = ({
     key: SharedLinkTableKey.ORIGINAL_LINKS,
     ellipsis: true,
     width: 165,
-    render: ({ state, original_link }: SharedLinkInfo) => {
+    render: ({ original_link }: SharedLinkInfo) => {
       const formatLink = formatLinkWithType(original_link, formatType);
 
-      return <CopyOrOpenDropMenu state={state} copy formatLink={formatLink} />;
+      return <CopyOrOpenDropMenu state={"OK"} copy formatLink={formatLink} />;
     },
   },
   {
@@ -132,6 +132,9 @@ const getColumns = ({
       )}`;
       const isAutoShared = created_by === CreatedBy.AUTO_SHARE;
       const formatLink = formatLinkWithType(link, formatType);
+      if (state === "PROCESSING") {
+        state = "OK";
+      }
 
       return (
         <CopyOrOpenDropMenu state={state} open copy formatLink={formatLink}>
@@ -209,7 +212,16 @@ const getColumns = ({
     render: ({ state }: SharedLinkInfo) => {
       return (
         <>
-          <Badge status={state === "OK" ? "success" : "error"} text={state} />
+          <Badge
+            status={
+              state === "OK"
+                ? "success"
+                : ["PROCESSING", "PENDING"].includes(state)
+                ? "warning"
+                : "error"
+            }
+            text={state}
+          />
         </>
       );
     },
