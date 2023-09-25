@@ -40,7 +40,7 @@ const getStatusDescribeText = (status?: SharedStatusType) => {
   return {
     title: "Sharing files in preparation...",
     subtitle:
-      "The corresponding sharing files are being prepared and will be generated within hours. You can check it out later, or download it locally via the link above, or faster remote download.",
+      "The corresponding sharing files are being prepared and will be generated within hours. You can check it out later, or download it locally via the link below, or faster remote download.",
   };
 };
 
