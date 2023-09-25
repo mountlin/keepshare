@@ -1,4 +1,4 @@
-import { Space, Typography, message } from "antd";
+import { Space, Typography, message, theme } from "antd";
 import {
   Background,
   BannerImage,
@@ -15,6 +15,7 @@ import PrepareStatusBanner from "@/assets/images/prepare-status-banner.png";
 import ExpiredStatusBanner from "@/assets/images/expired-status-banner.png";
 import { formatBytes } from "@/util";
 import { LinkOutlined } from "@ant-design/icons";
+import useStore from "@/store";
 
 const { Paragraph, Title, Text } = Typography;
 
@@ -80,18 +81,26 @@ const SharedStatus = () => {
   const { original_link: link, title: filename, size: storage } = fileInfo;
   const size = formatBytes((storage as number) || 0);
 
+  const { token } = theme.useToken();
+  const isMobile = useStore((state) => state.isMobile);
+
   return (
     <Background>
       <LogoPng src={LogoIcon} />
       <ContentWrapper>
-        <Paragraph style={{ maxWidth: "720px" }}>
+        <Paragraph
+          style={{
+            maxWidth: isMobile ? "100%" : "720px",
+            padding: token.padding,
+          }}
+        >
           <Title level={3} style={{ textAlign: "center", color: "#000" }}>
             {title}
           </Title>
           <Text style={{ color: "#000" }}>{subtitle}</Text>
         </Paragraph>
 
-        <BannerWrapper>
+        <BannerWrapper style={{ marginInline: token.margin }}>
           <BannerImage
             src={
               status === SharedStatusType.EXPIRED
@@ -115,9 +124,9 @@ const SharedStatus = () => {
           </SharedInfoBox>
         </BannerWrapper>
         {link && (
-          <Space style={{ marginTop: "16px" }}>
+          <Space style={{ marginTop: "16px", paddingInline: token.padding }}>
             <LinkOutlined />
-            <Text copyable style={{ color: "#000" }}>
+            <Text copyable style={{ color: "#000", wordBreak: "break-all" }}>
               {link}
             </Text>
           </Space>

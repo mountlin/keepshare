@@ -2,8 +2,9 @@ import styled from "styled-components";
 import backgroundSvg from "@/assets/images/cloud-bg.svg";
 
 export const Background = styled.div`
-  min-width: 100vh;
+  min-width: 100vw;
   min-height: 100vh;
+  box-sizing: border-box;
   background: url(${backgroundSvg}) no-repeat center/cover;
 `;
 
@@ -22,11 +23,19 @@ export const ContentWrapper = styled.div`
 
 export const BannerWrapper = styled.div<{ poster?: string }>`
   position: relative;
-  width: 480px;
+  width: 100%;
+  max-width: 480px;
   height: 335px;
   border-radius: 5px;
+  margin-inline: 6px;
+  box-sizing: border-box;
   background: ${(props) =>
     props.poster ? `url(${props.poster}) no-repeat center/cover` : "#000"};
+
+  @media screen and (max-width: 768px) {
+    width: calc(100vw - 32px);
+    height: 200px;
+  }
 `;
 
 export const BannerImage = styled.img`
@@ -42,7 +51,7 @@ export const SharedInfoBox = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
-  width: 450px;
+  max-width: 450px;
   left: 15px;
   bottom: 15px;
   color: #fff;
