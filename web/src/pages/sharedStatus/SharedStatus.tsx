@@ -9,7 +9,11 @@ import {
 } from "./style";
 import LogoIcon from "@/assets/images/logo-with-text.png";
 import { useEffect, useMemo, useState } from "react";
-import { SharedLinkInfo, getSharedLinkInfo } from "@/api/link";
+import {
+  SharedLinkInfo,
+  getLinkInfoFromWhatsLink,
+  getSharedLinkInfo,
+} from "@/api/link";
 import { useSearchParams } from "react-router-dom";
 import PrepareStatusBanner from "@/assets/images/prepare-status-banner.png";
 import ExpiredStatusBanner from "@/assets/images/expired-status-banner.png";
@@ -48,7 +52,9 @@ const SharedStatus = () => {
   const [status, setStatus] = useState<SharedStatusType>(
     SharedStatusType.EXPIRED,
   );
-  const [fileInfo, setFileInfo] = useState<Partial<SharedLinkInfo>>({});
+  const [fileInfo, setFileInfo] = useState<
+    Partial<SharedLinkInfo> & { screenshot?: string }
+  >({});
 
   const [params] = useSearchParams();
 
@@ -58,6 +64,7 @@ const SharedStatus = () => {
       return;
     }
 
+    // Get data from keepshare server, but the data may be incomplete (returned from PikPak)
     getSharedLinkInfo(autoId).then(({ data: fileInfo, error }) => {
       if (fileInfo) {
         setFileInfo(fileInfo);
@@ -74,6 +81,25 @@ const SharedStatus = () => {
           location.href = hostSharedLink;
         }
       }
+
+      // Get data from whatsLink website
+      if (!error) {
+        getLinkInfoFromWhatsLink(fileInfo?.original_link || "")
+          .then(({ data, error }) => {
+            if (error) {
+              return;
+            }
+            setFileInfo(
+              Object.assign({}, fileInfo, {
+                title: fileInfo?.title || data?.name,
+                size: fileInfo?.size || data?.size,
+                screenshot: data?.screenshots[0]?.screenshot,
+              }),
+            );
+          })
+          .catch(() => {});
+      }
+
       error && message.error(error.message);
     });
   }, []);
@@ -101,19 +127,27 @@ const SharedStatus = () => {
         </Paragraph>
 
         <BannerWrapper style={{ marginInline: token.margin }}>
-          <BannerImage
-            src={
-              status === SharedStatusType.EXPIRED
-                ? ExpiredStatusBanner
-                : PrepareStatusBanner
-            }
-            alt="banner"
-          />
+          {fileInfo.screenshot ? (
+            <BannerImage
+              src={fileInfo.screenshot}
+              alt="banner"
+              style={{
+                width: "100%",
+                height: "100%",
+              }}
+            />
+          ) : (
+            <BannerImage
+              src={
+                status === SharedStatusType.EXPIRED
+                  ? ExpiredStatusBanner
+                  : PrepareStatusBanner
+              }
+              alt="banner"
+            />
+          )}
           <SharedInfoBox>
-            <Text
-              ellipsis={{ suffix: filename?.slice(filename?.length - 3) }}
-              style={{ maxWidth: "100%", color: "#fff" }}
-            >
+            <Text ellipsis={{ suffix: filename?.slice(filename?.length - 3) }}>
               {filename}
             </Text>
             <Text

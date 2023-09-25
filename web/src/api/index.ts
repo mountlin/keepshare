@@ -109,7 +109,8 @@ export type AxiosWrapperResponse<T> = Promise<{
   | ({ error?: string; message?: string } & Record<string, unknown>)
   | null;
 }>;
-export const axiosWrapper = ((client: AxiosInstance) => {
+// custom axios wrapper by difference fetcher
+export const getAxiosWrapper = (client: AxiosInstance) => {
   return <T>(options: AxiosRequestConfig): AxiosWrapperResponse<T> =>
     new Promise((resolve) => {
       client<T>(options)
@@ -119,4 +120,6 @@ export const axiosWrapper = ((client: AxiosInstance) => {
           resolve({ data: null, error: error.response?.data }),
         );
     });
-})(fetcher);
+}
+
+export const axiosWrapper = ((client: AxiosInstance) => getAxiosWrapper(client))(fetcher);

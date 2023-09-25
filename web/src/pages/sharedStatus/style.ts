@@ -29,6 +29,7 @@ export const BannerWrapper = styled.div<{ poster?: string }>`
   border-radius: 5px;
   margin-inline: 6px;
   box-sizing: border-box;
+  overflow: hidden;
   background: ${(props) =>
     props.poster ? `url(${props.poster}) no-repeat center/cover` : "#000"};
 
@@ -51,6 +52,8 @@ export const SharedInfoBox = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
+  width: 90%;
+  box-sizing: border-box;
   max-width: 450px;
   left: 15px;
   bottom: 15px;

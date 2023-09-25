@@ -1,6 +1,7 @@
 import useSWR from "swr";
-import { axiosWrapper, fetcher } from ".";
+import { axiosWrapper, fetcher, getAxiosWrapper } from ".";
 import type { AxiosResponse } from "axios";
+import axios from "axios";
 
 export type SharedLinkStatus =
   | "PENDING"
@@ -161,3 +162,26 @@ export const removeFromBlacklist = (links: string[], isDeleteFile = false) => {
     data: { links, delete: isDeleteFile },
   });
 };
+
+/* 
+  get resource link from "WhatsLinks"
+  https://whatslink.info/
+*/
+export interface GetLinkInfoFromWhatsLinkResponse {
+  type: string; // The content type for the link
+  file_type: string; // The type of the content corresponding to the link, Possible values: unknown, folder, video, text, image, audio, archive, font, document
+  name: string; // The name of the content corresponding to the link
+  size: number; // The total size of the content corresponding to the link
+  count: number; // The number of included files corresponding to the link
+  screenshots: {
+    time: number; // Position of the screenshot within the content
+    screenshot: string; // The URL of the screenshot image
+  }[]; // List of content screenshots corresponding to the link
+}
+export const getLinkInfoFromWhatsLink = (link: string) => {
+  const client = axios.create({ baseURL: `https://whatslink.info/api/v1` });
+  return getAxiosWrapper(client)<GetLinkInfoFromWhatsLinkResponse>({
+    url: `/link?url=${window.encodeURIComponent(link)}`,
+    method: 'GET',
+  });
+}
