@@ -40,7 +40,7 @@ func asyncTaskCheckBackground() {
 		unCompleteTasks := make([]*model.SharedLink, 0)
 
 		w := fmt.Sprintf("`%s` in ('%s', '%s') AND `%s`>'%s' AND TIMESTAMPDIFF(SECOND, `%s`, NOW())*60 > TIMESTAMPDIFF(SECOND, `%s`, `%s`)",
-			state, string(share.StatusPending), string(share.StatusProcessing),
+			state, string(share.StatusPending), string(share.StatusCreated),
 			createdAt, time.Now().Add(-1*comm.RunningFilesMaxAge).Format(time.DateTime),
 			updatedAt, createdAt, updatedAt,
 		)
@@ -110,7 +110,7 @@ func asyncTaskCheckBackground() {
 			}
 
 			// if task processing duration grate than 48 hour, it's failed
-			if sh.State == share.StatusProcessing && time.Now().Sub(sh.CreatedAt).Hours() > 48 {
+			if sh.State == share.StatusCreated && time.Now().Sub(sh.CreatedAt).Hours() > 48 {
 				failedTasks = append(failedTasks, unCompleteTask)
 				continue
 			}

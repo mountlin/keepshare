@@ -15,15 +15,15 @@ type State string
 
 // Enum all Statuses.
 const (
-	StatusPending    State = "PENDING" // batch add "link to share" will create a pending task first
-	StatusUnknown    State = "UNKNOWN"
-	StatusProcessing State = "PROCESSING"
-	StatusOK         State = "OK"
-	StatusDeleted    State = "DELETED"
-	StatusNotFound   State = "NOT_FOUND"
-	StatusSensitive  State = "SENSITIVE" // the content corresponding to the link contains sensitive resources.
-	StatusBlocked    State = "BLOCKED"   // blocked by user self.
-	StatusError      State = "ERROR"
+	StatusPending   State = "PENDING" // batch add "link to share" will create a pending task first
+	StatusUnknown   State = "UNKNOWN"
+	StatusCreated   State = "CREATED"
+	StatusOK        State = "OK"
+	StatusDeleted   State = "DELETED"
+	StatusNotFound  State = "NOT_FOUND"
+	StatusSensitive State = "SENSITIVE" // the content corresponding to the link contains sensitive resources.
+	StatusBlocked   State = "BLOCKED"   // blocked by user self.
+	StatusError     State = "ERROR"
 )
 
 const (
@@ -75,7 +75,7 @@ func StatusFromFileStatus(s string) State {
 	case comm.StatusError:
 		return StatusSensitive
 	case comm.StatusRunning:
-		return StatusProcessing
+		return StatusCreated
 	default:
 		return StatusSensitive
 	}

@@ -99,7 +99,7 @@ func (p *PikPak) CreateFromLinks(ctx context.Context, keepShareUserID string, or
 	for _, f := range linksPending {
 		originalLink := hashToLink[f.OriginalLinkHash]
 		sharedLinks[originalLink] = &share.Share{
-			State:          share.StatusProcessing,
+			State:          share.StatusCreated,
 			Title:          f.Name,
 			HostSharedLink: "",
 			OriginalLink:   originalLink,

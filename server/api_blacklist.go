@@ -236,14 +236,14 @@ func removeFromBlackList(c *gin.Context) {
 				share.StatusOK.String(),
 			)})
 
-		// update all records status to StatusProcessing.
+		// update all records status to StatusCreated.
 		//_, _ = t.WithContext(ctx).Where(
 		//	t.UserID.Eq(userID),
 		//	t.State.Eq(share.StatusBlocked.String()),
 		//	t.OriginalLinkHash.In(hashes...),
 		//).UpdateColumns(map[string]any{
 		//	t.UpdatedAt.ColumnName().String(): t.CreatedAt, // to trigger asyncTaskCheckBackground
-		//	t.State.ColumnName().String():     share.StatusProcessing.String(),
+		//	t.State.ColumnName().String():     share.StatusCreated.String(),
 		//})
 	}()
 

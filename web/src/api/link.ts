@@ -6,7 +6,7 @@ import axios from "axios";
 export type SharedLinkStatus =
   | "PENDING"
   | "UNKNOWN"
-  | "PROCESSING"
+  | "CREATED"
   | "OK"
   | "DELETED"
   | "NOT_FOUND"

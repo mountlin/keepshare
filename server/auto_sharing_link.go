@@ -113,7 +113,7 @@ func createShareLinkIfNotExist(ctx *gin.Context, userID string, host *hosts.Host
 	if sh != nil {
 		status := getShareStatus(ctx, userID, host, sh)
 		switch status {
-		case share.StatusUnknown, share.StatusOK, share.StatusProcessing, share.StatusPending:
+		case share.StatusUnknown, share.StatusOK, share.StatusCreated, share.StatusPending:
 			break
 
 		case share.StatusDeleted, share.StatusNotFound, share.StatusSensitive:

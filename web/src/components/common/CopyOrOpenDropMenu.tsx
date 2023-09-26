@@ -42,7 +42,7 @@ const CopyOrOpenDropMenu = ({
   formatLink,
   children,
 }: ComponentProps) => {
-  const processing = ["PROCESSING", "PENDING"].includes(state);
+  const processing = ["CREATED", "PENDING"].includes(state);
 
   const actionTypes: LinkActionType[] = [];
   if (state === "OK") {
@@ -68,7 +68,7 @@ const CopyOrOpenDropMenu = ({
         <Space>
           {processing && <LoadingOutlined />}
           {processing ? (
-            <Text ellipsis>{state}</Text>
+            <Text ellipsis>PROCESSING</Text>
           ) : (
             <Text ellipsis type="danger">
               {state}

@@ -132,7 +132,7 @@ const getColumns = ({
       )}`;
       const isAutoShared = created_by === CreatedBy.AUTO_SHARE;
       const formatLink = formatLinkWithType(link, formatType);
-      if (state === "PROCESSING") {
+      if (state === "CREATED") {
         state = "OK";
       }
 
@@ -216,7 +216,7 @@ const getColumns = ({
             status={
               state === "OK"
                 ? "success"
-                : ["PROCESSING", "PENDING"].includes(state)
+                : ["CREATED", "PENDING"].includes(state)
                 ? "warning"
                 : "error"
             }

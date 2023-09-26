@@ -21,7 +21,7 @@ import { formatBytes } from "@/util";
 import { LinkOutlined } from "@ant-design/icons";
 import useStore from "@/store";
 
-const { Paragraph, Title, Text } = Typography;
+const { Paragraph, Title, Text, Link } = Typography;
 
 const enum SharedStatusType {
   PREPARE = "prepare",
@@ -71,14 +71,15 @@ const SharedStatus = () => {
 
         const state = fileInfo.state;
         setStatus(
-          state === "PROCESSING"
+          state === "CREATED"
             ? SharedStatusType.PREPARE
             : SharedStatusType.EXPIRED,
         );
 
         const hostSharedLink = fileInfo.host_shared_link;
         if (state === "OK" && hostSharedLink) {
-          location.href = hostSharedLink;
+          // TODO:
+          // location.href = hostSharedLink;
         }
       }
 
@@ -147,7 +148,12 @@ const SharedStatus = () => {
             />
           )}
           <SharedInfoBox>
-            <Text ellipsis={{ suffix: filename?.slice(filename?.length - 3) }}>
+            <Text
+              ellipsis={{ suffix: filename?.slice(filename?.length - 3) }}
+              style={{
+                color: "rgba(255, 255, 255, 0.60)",
+              }}
+            >
               {filename}
             </Text>
             <Text
@@ -160,11 +166,25 @@ const SharedStatus = () => {
         {link && (
           <Space style={{ marginTop: "16px", paddingInline: token.padding }}>
             <LinkOutlined />
-            <Text copyable style={{ color: "#000", wordBreak: "break-all" }}>
+            <Link
+              href={link}
+              copyable
+              style={{ color: "#000", wordBreak: "break-all" }}
+            >
               {link}
-            </Text>
+            </Link>
           </Space>
         )}
+        <Link
+          href="https://whatslink.info/"
+          style={{
+            color: "rgba(0, 0, 0, 0.65)",
+            paddingInline: token.padding,
+          }}
+        >
+          The images and information of the link comes from whatslink.info.
+          whatslink.info
+        </Link>
       </ContentWrapper>
     </Background>
   );
