@@ -105,6 +105,12 @@ const AutoShare = () => {
           <TemplateDescribe token={token} color={token.colorPrimary}>
             URL-encoded download link
           </TemplateDescribe>
+          <Paragraph>
+            <Text>Javascript Code: </Text>
+            <Text copyable={true}>
+              {`'https://keepshare.org/${userInfo.channel_id}/' + encodeURIComponent(downloadURL)`}
+            </Text>
+          </Paragraph>
         </Space>
         {isMobile ? (
           <MobileEduBannerImg src={EduBanner} />
