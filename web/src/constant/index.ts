@@ -1,5 +1,7 @@
 export const enum SupportLocales {
   En = "en",
+  ZH_CN = "zh-CN",
+  ZH_TW = "zh-TW",
 }
 
 // localStorage store keys

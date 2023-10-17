@@ -3,7 +3,7 @@ import { match } from "ts-pattern";
 import dayJs from "dayjs";
 import sha256 from "crypto-js/sha256";
 import hex from "crypto-js/enc-hex";
-import { LinkFormatType, LocalStorageKeys } from "@/constant";
+import { LinkFormatType, LocalStorageKeys, SupportLocales } from "@/constant";
 import { SharedLinkInfo } from "@/api/link";
 
 // validate email format
@@ -139,3 +139,17 @@ export const exportExcel = async (data: unknown[][], filename: string) => {
   // export excel
   XLSX.writeFile(wb, filename);
 };
+
+// parse user browser language
+export const getSupportLanguage = (): SupportLocales => {
+  const userLanguage = navigator.language;
+
+  if (userLanguage.includes('zh')) {
+    if (userLanguage.toLowerCase() === 'zh-tw' || userLanguage.toLowerCase() === 'zh-hk') {
+      return SupportLocales.ZH_TW;
+    } else if (userLanguage.toLowerCase() === 'zh-cn' || userLanguage.toLowerCase() === 'zh-sg') {
+      return SupportLocales.ZH_CN;
+    }
+  }
+  return SupportLocales.En;
+}

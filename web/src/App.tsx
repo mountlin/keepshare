@@ -10,11 +10,14 @@ import { CustomLightStyle, CustomDarkStyle } from "@/common/style/globalStyle";
 import { getRememberToken } from "./util";
 
 const App = () => {
-  const [themeMode, setThemeMode, setKeepLogin] = useStore((state) => [
-    state.themeMode,
-    state.setThemeMode,
-    state.setKeepLogin,
-  ]);
+  const [themeMode, setThemeMode, setKeepLogin, setIsMobile] = useStore(
+    (state) => [
+      state.themeMode,
+      state.setThemeMode,
+      state.setKeepLogin,
+      state.setIsMobile,
+    ],
+  );
 
   useEffect(() => {
     const isDarkMode =
@@ -25,6 +28,14 @@ const App = () => {
 
     const isKeepLogin = getRememberToken();
     setKeepLogin(isKeepLogin);
+  }, []);
+
+  useEffect(() => {
+    const resize = () => setIsMobile(window.innerWidth < 768);
+    resize();
+    window.addEventListener("resize", resize);
+
+    return () => window.removeEventListener("resize", resize);
   }, []);
 
   return (

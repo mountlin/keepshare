@@ -19,17 +19,19 @@ export const ContentWrapper = styled.div`
   align-items: center;
   justify-content: center;
   min-height: calc(100vh - 88px);
+  padding-inline: 16px;
 `;
 
 export const BannerWrapper = styled.div<{ poster?: string }>`
   position: relative;
   width: 100%;
-  max-width: 480px;
-  height: 335px;
-  border-radius: 5px;
+  max-width: 340px;
+  height: 216px;
+  border-radius: 16px;
   margin-inline: 6px;
   box-sizing: border-box;
   overflow: hidden;
+  margin-top: auto;
   background: ${(props) =>
     props.poster ? `url(${props.poster}) no-repeat center/cover` : "#000"};
 
@@ -52,7 +54,6 @@ export const SharedInfoBox = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
-  width: 90%;
   box-sizing: border-box;
   max-width: 450px;
   left: 15px;
@@ -60,4 +61,7 @@ export const SharedInfoBox = styled.div`
   color: #fff;
   line-height: 1.4em;
   font-size: 14px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: rgba(68, 68, 68, 0.60);
 `;

@@ -1,4 +1,4 @@
-import { Space, Typography, message, theme } from "antd";
+import { Button, Space, Typography, message, theme } from "antd";
 import {
   Background,
   BannerImage,
@@ -8,55 +8,93 @@ import {
   SharedInfoBox,
 } from "./style";
 import LogoIcon from "@/assets/images/logo-with-text.png";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   SharedLinkInfo,
+  SharedLinkStatus,
   getLinkInfoFromWhatsLink,
   getSharedLinkInfo,
 } from "@/api/link";
 import { useSearchParams } from "react-router-dom";
-import PrepareStatusBanner from "@/assets/images/prepare-status-banner.png";
-import ExpiredStatusBanner from "@/assets/images/expired-status-banner.png";
-import { formatBytes } from "@/util";
-import { LinkOutlined } from "@ant-design/icons";
+import ShareIcon from "@/assets/images/prepare-status-banner.png";
+import LoadingAPng from "@/assets/images/keepshare-loading.png";
+import { copyToClipboard, formatBytes, getSupportLanguage } from "@/util";
+import { CopyOutlined, LinkOutlined } from "@ant-design/icons";
 import useStore from "@/store";
+import { Trans, useTranslation } from "react-i18next";
+import { RoutePaths } from "@/router";
 
-const { Paragraph, Title, Text, Link } = Typography;
+const { Title, Text, Link } = Typography;
 
-const enum SharedStatusType {
-  PREPARE = "prepare",
-  EXPIRED = "expired",
-}
+const getStatusDescribeText = (
+  status: SharedLinkStatus,
+  holder: JSX.Element,
+) => {
+  const { t } = useTranslation();
 
-const getStatusDescribeText = (status?: SharedStatusType) => {
-  if (status === SharedStatusType.EXPIRED) {
+  if (["UNKNOWN", "DELETED", "NOT_FOUND", "BLOCKED"].includes(status)) {
     return {
-      title: "The current link has expired",
-      subtitle:
-        "KeepShare cannot find the link corresponding to the current file",
+      title: t("mEjDyHbG9xiu_6NlaegOn"),
+      subtitle: (
+        <Text>
+          <Trans i18nKey="dW_5y60qwkDKvThMDiFl" components={[holder]}></Trans>
+        </Text>
+      ),
     };
   }
 
   return {
-    title: "Sharing files in preparation...",
-    subtitle:
-      "The corresponding sharing files are being prepared and will be generated within hours. You can check it out later, or download it locally via the link below, or faster remote download.",
+    title: t("2D0jDl0qeMSqvV0Ly6Iyd"),
+    subtitle: (
+      <Text>
+        <Trans i18nKey="jgAl1qdprLfErnmioSgOu" components={[holder]}></Trans>
+      </Text>
+    ),
   };
 };
 
+const Loading = () => {
+  const { t } = useTranslation();
+
+  return (
+    <Space
+      direction="vertical"
+      align="center"
+      style={{
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+      }}
+    >
+      <img src={LoadingAPng} alt="loading" width={120} />
+      <Text>{t("tHxXtk0qRYf6Kh4qNcuHh")}</Text>
+    </Space>
+  );
+};
+
 const SharedStatus = () => {
-  const { title, subtitle } = useMemo(
-    () => getStatusDescribeText(SharedStatusType.PREPARE),
-    [],
+  const { t, i18n } = useTranslation();
+
+  const { token } = theme.useToken();
+
+  const remoteDownload = (
+    <Link href="https://mypikpak.com/" style={{ color: token.colorPrimary }}>
+      {t("hDvGl13AlFfsLIi2jQ3xP")}
+    </Link>
   );
-  const [status, setStatus] = useState<SharedStatusType>(
-    SharedStatusType.EXPIRED,
-  );
+  const [status, setStatus] = useState<SharedLinkStatus>("PENDING");
+  const { title, subtitle } = getStatusDescribeText(status, remoteDownload);
+
   const [fileInfo, setFileInfo] = useState<
     Partial<SharedLinkInfo> & { screenshot?: string }
   >({});
 
   const [params] = useSearchParams();
+
+  const setThemeMode = useStore((state) => state.setThemeMode);
+  // status page keep light mode
+  useEffect(() => setThemeMode("light"), []);
 
   useEffect(() => {
     const autoId = params.get("id") || "";
@@ -70,11 +108,7 @@ const SharedStatus = () => {
         setFileInfo(fileInfo);
 
         const state = fileInfo.state;
-        setStatus(
-          state === "CREATED"
-            ? SharedStatusType.PREPARE
-            : SharedStatusType.EXPIRED,
-        );
+        setStatus(state);
 
         const hostSharedLink = fileInfo.host_shared_link;
         if (state === "OK" && hostSharedLink) {
@@ -107,84 +141,120 @@ const SharedStatus = () => {
   const { original_link: link, title: filename, size: storage } = fileInfo;
   const size = formatBytes((storage as number) || 0);
 
-  const { token } = theme.useToken();
   const isMobile = useStore((state) => state.isMobile);
+
+  const handleCopyLink = () => {
+    try {
+      link && copyToClipboard(link);
+      message.success(t("xKhHo2JwfdzWgJXiJ0GeI"));
+    } catch {
+      message.error(t("aiCd4EgbrLDu4cdLlBy"));
+    }
+  };
+
+  useEffect(() => {
+    i18n.changeLanguage(getSupportLanguage() as any);
+  }, []);
 
   return (
     <Background>
-      <LogoPng src={LogoIcon} />
-      <ContentWrapper>
-        <Paragraph
-          style={{
-            maxWidth: isMobile ? "100%" : "720px",
-            padding: token.padding,
-          }}
-        >
-          <Title level={3} style={{ textAlign: "center", color: "#000" }}>
-            {title}
-          </Title>
-          <Text style={{ color: "#000" }}>{subtitle}</Text>
-        </Paragraph>
-
-        <BannerWrapper style={{ marginInline: token.margin }}>
+      <Link href={RoutePaths.Home}>
+        <LogoPng src={LogoIcon} />
+      </Link>
+      {status === "PENDING" ? (
+        <Loading />
+      ) : (
+        <ContentWrapper>
           {fileInfo.screenshot ? (
-            <BannerImage
-              src={fileInfo.screenshot}
-              alt="banner"
-              style={{
-                width: "100%",
-                height: "100%",
-              }}
-            />
+            <BannerWrapper style={{ marginInline: token.margin }}>
+              {fileInfo.screenshot && (
+                <BannerImage
+                  src={fileInfo.screenshot}
+                  alt="banner"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                  }}
+                />
+              )}
+              <SharedInfoBox>
+                {t("whMzAm8sGpQfOTqadiXu")} {size}
+              </SharedInfoBox>
+            </BannerWrapper>
           ) : (
-            <BannerImage
-              src={
-                status === SharedStatusType.EXPIRED
-                  ? ExpiredStatusBanner
-                  : PrepareStatusBanner
-              }
-              alt="banner"
-            />
+            <Space
+              direction="vertical"
+              align="center"
+              style={{ marginTop: "auto" }}
+            >
+              <img src={ShareIcon} style={{ width: "94px" }} alt="shareIcon" />
+              <Text style={{ color: token.colorTextSecondary }}>
+                {t("whMzAm8sGpQfOTqadiXu")} {size}
+              </Text>
+            </Space>
           )}
-          <SharedInfoBox>
+          <Text
+            style={{
+              maxWidth: "min(600px, 100vw)",
+              marginTop: "12px",
+              textAlign: "center",
+              lineHeight: "1.4em",
+            }}
+          >
+            {filename}
+          </Text>
+          <Space style={{ marginTop: token.marginLG }}>
+            <LinkOutlined style={{ fontSize: "24px" }} />
             <Text
-              ellipsis={{ suffix: filename?.slice(filename?.length - 3) }}
-              style={{
-                color: "rgba(255, 255, 255, 0.60)",
-              }}
-            >
-              {filename}
-            </Text>
-            <Text
-              style={{ color: "rgba(255, 255, 255, 0.60)", fontSize: "12px" }}
-            >
-              {size}
-            </Text>
-          </SharedInfoBox>
-        </BannerWrapper>
-        {link && (
-          <Space style={{ marginTop: "16px", paddingInline: token.padding }}>
-            <LinkOutlined />
-            <Link
-              href={link}
-              copyable
-              style={{ color: "#000", wordBreak: "break-all" }}
+              style={{ fontSize: token.fontSizeLG, wordBreak: "break-all" }}
             >
               {link}
-            </Link>
+            </Text>
           </Space>
-        )}
-        <Link
-          href="https://whatslink.info/"
-          style={{
-            color: "rgba(0, 0, 0, 0.65)",
-            paddingInline: token.padding,
-          }}
-        >
-          The images and information of the link comes from whatslink.info.
-          whatslink.info
-        </Link>
-      </ContentWrapper>
+          <Space style={{ marginTop: token.margin }}>
+            <Button
+              type="primary"
+              icon={<CopyOutlined />}
+              onClick={handleCopyLink}
+            >
+              {t("fbWqi7mJuMCxEw3SwCf_0")}
+            </Button>
+          </Space>
+          <Space
+            align={isMobile ? "center" : "start"}
+            style={{ marginTop: "56px" }}
+            direction={isMobile ? "vertical" : "horizontal"}
+          >
+            <Title level={3} style={{ lineHeight: "1em" }}>
+              {title}
+            </Title>
+            <Text style={{ display: "inline-block", maxWidth: "458px" }}>
+              {subtitle}
+            </Text>
+          </Space>
+          <Text
+            style={{
+              color: token.colorTextSecondary,
+              marginTop: "auto",
+              marginBottom: token.marginLG,
+              textAlign: "center",
+            }}
+          >
+            <Trans
+              i18nKey="3BuCl0v1UfHeRbDqnuh0N"
+              components={[
+                <Link
+                  underline
+                  style={{ color: token.colorTextSecondary }}
+                  href="https://whatslink.info"
+                >
+                  whatslink.info
+                </Link>,
+              ]}
+            ></Trans>
+          </Text>
+        </ContentWrapper>
+      )}
     </Background>
   );
 };

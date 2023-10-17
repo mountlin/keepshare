@@ -12,18 +12,7 @@ const Home = () => {
       navigate(RoutePaths.AutoShare);
   }, []);
 
-  const [isMobile, setIsMobile] = useStore((state) => [
-    state.isMobile,
-    state.setIsMobile,
-  ]);
-
-  useEffect(() => {
-    const resize = () => setIsMobile(window.innerWidth < 768);
-    resize();
-    window.addEventListener("resize", resize);
-
-    return () => window.removeEventListener("resize", resize);
-  }, []);
+  const isMobile = useStore((state) => state.isMobile);
 
   return isMobile ? <MobileMainLayout /> : <MainLayout />;
 };
