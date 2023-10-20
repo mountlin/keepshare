@@ -79,7 +79,10 @@ const SharedStatus = () => {
   const { token } = theme.useToken();
 
   const remoteDownload = (
-    <Link href="https://mypikpak.com/" style={{ color: token.colorPrimary }}>
+    <Link
+      href="https://mypikpak.com/drive/url-checker"
+      style={{ color: token.colorPrimary }}
+    >
       {t("hDvGl13AlFfsLIi2jQ3xP")}
     </Link>
   );
@@ -112,7 +115,7 @@ const SharedStatus = () => {
 
         const hostSharedLink = fileInfo.host_shared_link;
         if (state === "OK" && hostSharedLink) {
-          location.href = hostSharedLink;
+          // location.href = hostSharedLink;
         }
       }
 
@@ -205,11 +208,16 @@ const SharedStatus = () => {
           </Text>
           <Space style={{ marginTop: token.marginLG }}>
             <LinkOutlined style={{ fontSize: "24px" }} />
-            <Text
-              style={{ fontSize: token.fontSizeLG, wordBreak: "break-all" }}
+            <Link
+              href={link}
+              style={{
+                fontSize: token.fontSizeLG,
+                wordBreak: "break-all",
+                color: token.colorTextBase,
+              }}
             >
               {link}
-            </Text>
+            </Link>
           </Space>
           <Space style={{ marginTop: token.margin }}>
             <Button
