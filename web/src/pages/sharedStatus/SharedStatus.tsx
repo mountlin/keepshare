@@ -115,7 +115,7 @@ const SharedStatus = () => {
 
         const hostSharedLink = fileInfo.host_shared_link;
         if (state === "OK" && hostSharedLink) {
-          // location.href = hostSharedLink;
+          location.href = hostSharedLink;
         }
       }
 
